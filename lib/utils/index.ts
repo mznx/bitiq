@@ -1,3 +1,2 @@
-import metadata from './metadata';
-
+export * from './metadata';
 export * from './common';
