@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
-      "target": "esnext",
-      "module": "CommonJS",
-      "newLine": "LF",
-      "esModuleInterop": true,
-      "strict": true,
-      "removeComments": true,
+        "target": "esnext",
+        "module": "CommonJS",
+        "newLine": "LF",
+        "esModuleInterop": true,
+        "strict": true,
+        "removeComments": true,
+        "outDir": "./build",
+        "declaration": true
     }
 }
