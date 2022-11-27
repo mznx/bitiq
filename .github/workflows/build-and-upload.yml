@@ -19,11 +19,8 @@ jobs:
 
       - name: Upload 🚀
         uses: s0/git-publish-subdir-action@develop
-        with:
-          branch: build
-          folder: dist
-          env:
-            REPO: self
-            BRANCH: build
-            FOLDER: build
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          REPO: self
+          BRANCH: build
+          FOLDER: build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
