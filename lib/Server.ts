@@ -1,7 +1,9 @@
-import { Router } from "./Router";
-
 export class Server {
-    constructor(router: Router) {}
+    constructor(private readonly AppModule: any) {}
+
+    public init() {
+        //
+    }
 
     public listen() {}
 }
