@@ -1,5 +1,6 @@
-import { Router } from "./Router";
 export declare class Server {
-    constructor(router: Router);
+    private readonly AppModule;
+    constructor(AppModule: any);
+    init(): void;
     listen(): void;
 }
