@@ -8,12 +8,17 @@ export function Controller(path?: string) {
 }
 
 
-export function Post(path?: string): any {
-    const defaultPath = '/';
-    const p = path || defaultPath;
+export function Request(method: string) {
+    return (path?: string) => {
+        const defaultPath = '/';
+        const p = path || defaultPath;
 
-    return (target: any, key: any, desc: any) => {
-        Reflect.setMetadata(desc.value, 'path', p);
-        Reflect.setMetadata(desc.value, 'method', 'post');
+        return (target: any, key: string, desc: TypedPropertyDescriptor<any>) => {
+            Reflect.setMetadata(desc.value, 'path', p);
+            Reflect.setMetadata(desc.value, 'method', method);
+        }
     }
 }
+
+
+export const Post = Request('POST');
