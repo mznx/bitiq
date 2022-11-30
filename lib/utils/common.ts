@@ -8,7 +8,7 @@ export function parseUrlPath(str: string | undefined) {
 
 
 export async function getRequestBody(req: http.IncomingMessage) {
-    const buffer = [];
+    const buffer: Uint8Array[] = [];
 
     for await (const chunk of req) {
         buffer.push(chunk);
@@ -19,14 +19,14 @@ export async function getRequestBody(req: http.IncomingMessage) {
 }
 
 
-export function getClassMethodNames(obj: any) {
+export function getClassMethodNames<T extends object, J extends keyof T>(obj: T) {
     const proto = Object.getPrototypeOf(obj);
-    const names = Object.getOwnPropertyNames(proto);
-    const methodNames: string[] = [];
+    const names = Object.getOwnPropertyNames(proto) as J[];
+    const methodNames: J[] = [];
 
     for (const name of names) {
-        const el = obj[name];
-        if (typeof el === 'function' && name !== 'constructor') {
+        const elem = obj[name];
+        if (typeof elem === 'function' && name !== 'constructor') {
             methodNames.push(name);
         }
     }

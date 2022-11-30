@@ -1,3 +1,6 @@
+import { HttpMethod } from "../Router";
+
+
 export function Controller(path?: string) {
     const defaultPath = '/';
     const p = path || defaultPath;
@@ -8,9 +11,9 @@ export function Controller(path?: string) {
 }
 
 
-export function Request(method: string) {
+export function Request(method: HttpMethod) {
     return (path?: string) => {
-        const defaultPath = '/';
+        const defaultPath = '';
         const p = path || defaultPath;
 
         return (target: any, key: string, desc: TypedPropertyDescriptor<any>) => {
@@ -21,4 +24,7 @@ export function Request(method: string) {
 }
 
 
-export const Post = Request('POST');
+export const Get = Request(HttpMethod.GET);
+
+
+export const Post = Request(HttpMethod.POST);

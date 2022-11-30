@@ -1,37 +1,56 @@
 import { getClassMethodNames } from "./utils/common";
 
+
 export class Router {
-    public readonly post = new Map();
+    // public readonly post = new Map();
+    public readonly routes: Map<HttpMethod, Map<string, any>> = new Map();
 
-    constructor() {}
+    constructor(module: any) {
+        this.init();
+        this.generate(module);
+    }
 
-    public async use(controllers: any[], globalCtx?: any) {
-        const global = globalCtx || {};
+    private generate(module: any) {
+        const moduleModel = Reflect.getMetadata(module, 'model');
+        const moduleController = Reflect.getMetadata(module, 'controller');
+        const moduleImports = Reflect.getMetadata(module, 'import') as any[];
 
-        for (const controller of controllers) {
-            const ctrlPath = Reflect.getMetadata(controller, 'path');
-            const ctrl = new controller(global);
-            const methodNames = getClassMethodNames(ctrl);
+        if (moduleModel && moduleController) {
+            const model = new moduleModel();
+            const controller = new moduleController(model);
+
+            const controllerPath = Reflect.getMetadata(moduleController, 'path');
+            
+            const methodNames = getClassMethodNames(controller);
+
             for (const name of methodNames) {
-                const action = ctrl[name];
-                const routePath = Reflect.getMetadata(action, 'path');
-                const routeMethod = Reflect.getMetadata(action, 'method');
-                const path = `/${ctrlPath}/${routePath}`;
+                const methodPath = Reflect.getMetadata(controller[name], 'path') as string;
+                const methodMethod = Reflect.getMetadata(controller[name], 'method') as HttpMethod;
+                const actionFullPath = `/${controllerPath}/${methodPath}`;
+                this.routes.get(methodMethod).set(actionFullPath, controller[name]);
+            }
+        }
 
-                // TODO тут проверки
-
-                switch(routeMethod) {
-                    case 'post':
-                        this['post'].set(path, action)
-                        break;
-                    default:
-                        //
-                }
+        if (moduleImports?.length) {
+            for (const module of moduleImports) {
+                this.generate(module);
             }
         }
     }
+
+    private init() {
+        this.routes.set(HttpMethod.GET, new Map());
+        this.routes.set(HttpMethod.POST, new Map());
+    }
 }
+
 
 export class BaseController {
     constructor(protected readonly model: any) { }
+}
+
+
+export enum HttpMethod {
+    'GET' = 0,
+    'POST' = 1,
 }
