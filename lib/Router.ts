@@ -27,7 +27,7 @@ export class Router {
                 const methodPath = Reflect.getMetadata(controller[name], 'path') as string;
                 const methodMethod = Reflect.getMetadata(controller[name], 'method') as HttpMethod;
                 const actionFullPath = `/${controllerPath}/${methodPath}`;
-                this.routes.get(methodMethod).set(actionFullPath, controller[name]);
+                this.routes.get(methodMethod)!.set(actionFullPath, controller[name]); // TODO добавить проверку
             }
         }
 
