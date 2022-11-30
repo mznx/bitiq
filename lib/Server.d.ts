@@ -1,6 +1,7 @@
 export declare class Server {
     private readonly AppModule;
+    private readonly router;
     constructor(AppModule: any);
-    init(): void;
+    init(): Promise<void>;
     listen(): void;
 }
